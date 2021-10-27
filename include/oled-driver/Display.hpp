@@ -13,6 +13,7 @@ public:
     explicit Display(SSD1306Interface &interface);
 
     void setColumnStartAddress(uint8_t addr) override;
+    void resetColumnStartAddress();
     void setMemoryAddressingMode(AddressingMode mode) override;
     void setColumnAddress(uint8_t addrStart, uint8_t addrEnd) override;
     void setPageAddress(uint8_t addrStart, uint8_t addrEnd) override;
@@ -27,6 +28,7 @@ public:
     void setDimMode(uint8_t contrast, uint8_t brightness) override;
     void setDisplayState(DisplayState state) override;
     void setPageStartAddress(uint8_t addr) override;
+    void resetPageStartAddress();
     void setComOutputMode(ComMode mode) override;
     void setDisplayOffset(uint8_t offset) override;
     void setDisplayClockDivide(uint8_t divideRatio, uint8_t fOsc) override;
@@ -57,4 +59,7 @@ public:
 
 private:
     SSD1306Interface &di;
+
+    uint8_t columnStartAddress = 0;
+    uint8_t pageStartAddress = 0;
 };

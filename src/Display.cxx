@@ -46,8 +46,15 @@ Display::Display(SSD1306Interface &interface) : di{interface}
 //--------------------------------------------------------------------------------------------------
 void Display::setColumnStartAddress(uint8_t addr)
 {
-    di.writeCommand(command::SetLowerColumnStartAddress | (addr & 0xf));
-    di.writeCommand(command::SetUpperColumnStartAddress | (addr >> 4));
+    columnStartAddress = addr;
+    resetColumnStartAddress();
+}
+
+//--------------------------------------------------------------------------------------------------
+void Display::resetColumnStartAddress()
+{
+    di.writeCommand(command::SetLowerColumnStartAddress | (columnStartAddress & 0xf));
+    di.writeCommand(command::SetUpperColumnStartAddress | (columnStartAddress >> 4));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -167,7 +174,13 @@ void Display::setDisplayState(Display::DisplayState state)
 //--------------------------------------------------------------------------------------------------
 void Display::setPageStartAddress(uint8_t addr)
 {
-    di.writeCommand(command::SetPageStartAddress | (addr & 0b111));
+    pageStartAddress = addr;
+}
+
+//--------------------------------------------------------------------------------------------------
+void Display::resetPageStartAddress()
+{
+    di.writeCommand(command::SetPageStartAddress | (pageStartAddress & 0b111));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -301,8 +314,8 @@ void Display::draw(const uint8_t *data, size_t length)
 //--------------------------------------------------------------------------------------------------
 void Display::submitImage(const uint8_t *image, size_t length)
 {
-    setPageStartAddress(0);
-    setColumnStartAddress(4);
+    resetPageStartAddress();
+    resetColumnStartAddress();
 
     draw(image, length);
 }
