@@ -1,4 +1,4 @@
-#include "oled-driver/Display.hpp"
+#include "oled-driver/SSD1305.hpp"
 
 namespace command
 {
@@ -39,33 +39,28 @@ constexpr auto ExitReadWriteModify          = 0xEE;
 } // namespace command
 
 //--------------------------------------------------------------------------------------------------
-Display::Display(SSD1306Interface &interface) : di{interface}
-{
-}
-
-//--------------------------------------------------------------------------------------------------
-void Display::setColumnStartAddress(uint8_t addr)
+void SSD1305::setColumnStartAddress(uint8_t addr)
 {
     columnStartAddress = addr;
     resetColumnStartAddress();
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::resetColumnStartAddress()
+void SSD1305::resetColumnStartAddress()
 {
     di.writeCommand(command::SetLowerColumnStartAddress | (columnStartAddress & 0xf));
     di.writeCommand(command::SetUpperColumnStartAddress | (columnStartAddress >> 4));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setMemoryAddressingMode(Display::AddressingMode mode)
+void SSD1305::setMemoryAddressingMode(SSD1305::AddressingMode mode)
 {
     di.writeCommand(command::SetMemoryAddressingMode);
     di.writeCommand(static_cast<uint8_t>(mode) & 0b11);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setColumnAddress(uint8_t addrStart, uint8_t addrEnd)
+void SSD1305::setColumnAddress(uint8_t addrStart, uint8_t addrEnd)
 {
     di.writeCommand(command::SetColumnAddress);
     di.writeCommand(addrStart);
@@ -73,7 +68,7 @@ void Display::setColumnAddress(uint8_t addrStart, uint8_t addrEnd)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setPageAddress(uint8_t addrStart, uint8_t addrEnd)
+void SSD1305::setPageAddress(uint8_t addrStart, uint8_t addrEnd)
 {
     di.writeCommand(command::SetPageAddress);
     di.writeCommand(addrStart);
@@ -81,28 +76,28 @@ void Display::setPageAddress(uint8_t addrStart, uint8_t addrEnd)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setDisplayStartLine(uint8_t line)
+void SSD1305::setDisplayStartLine(uint8_t line)
 {
     line &= 0x3f;
     di.writeCommand(command::SetDisplayStartLine | line);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setContrastControl(uint8_t contrast)
+void SSD1305::setContrastControl(uint8_t contrast)
 {
     di.writeCommand(command::SetContrastControl);
     di.writeCommand(contrast);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setBrightness(uint8_t brightness)
+void SSD1305::setBrightness(uint8_t brightness)
 {
     di.writeCommand(command::SetBrightness);
     di.writeCommand(brightness);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setLUT(uint8_t bank0, uint8_t colorA, uint8_t colorB, uint8_t colorC)
+void SSD1305::setLUT(uint8_t bank0, uint8_t colorA, uint8_t colorB, uint8_t colorC)
 {
     di.writeCommand(command::SetLut);
     di.writeCommand(bank0);
@@ -112,32 +107,32 @@ void Display::setLUT(uint8_t bank0, uint8_t colorA, uint8_t colorB, uint8_t colo
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setSegmentRemap(bool remap)
+void SSD1305::setSegmentRemap(bool remap)
 {
     di.writeCommand(command::SetSegmentRemap | (remap ? 1 : 0));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setEntireDisplayOn(bool on)
+void SSD1305::setEntireDisplayOn(bool on)
 {
     di.writeCommand(command::EntireDisplayOn | (on ? 1 : 0));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setInverseDisplay(bool inverse)
+void SSD1305::setInverseDisplay(bool inverse)
 {
     di.writeCommand(command::SetNormalInverseDisplay | (inverse ? 1 : 0));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setMultiplexRatio(uint8_t ratio)
+void SSD1305::setMultiplexRatio(uint8_t ratio)
 {
     di.writeCommand(command::SetMuxRatio);
     di.writeCommand(ratio);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setDimMode(uint8_t contrast, uint8_t brightness)
+void SSD1305::setDimMode(uint8_t contrast, uint8_t brightness)
 {
     di.writeCommand(command::DimModeSetting);
     di.writeCommand(0); // reserved
@@ -146,21 +141,21 @@ void Display::setDimMode(uint8_t contrast, uint8_t brightness)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setDisplayState(Display::DisplayState state)
+void SSD1305::setDisplayState(SSD1305::DisplayState state)
 {
     uint8_t cmd = command::Nop;
 
     switch (state)
     {
-    case Display::DisplayState::On:
+    case SSD1305::DisplayState::On:
         cmd = command::SetDisplayOn;
         break;
 
-    case Display::DisplayState::Off:
+    case SSD1305::DisplayState::Off:
         cmd = command::SetDisplayOff;
         break;
 
-    case Display::DisplayState::Dimmed:
+    case SSD1305::DisplayState::Dimmed:
         cmd = command::SetDisplayDimmed;
         break;
 
@@ -172,37 +167,37 @@ void Display::setDisplayState(Display::DisplayState state)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setPageStartAddress(uint8_t addr)
+void SSD1305::setPageStartAddress(uint8_t addr)
 {
     pageStartAddress = addr;
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::resetPageStartAddress()
+void SSD1305::resetPageStartAddress()
 {
     di.writeCommand(command::SetPageStartAddress | (pageStartAddress & 0b111));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setComOutputMode(Display::ComMode mode)
+void SSD1305::setComOutputMode(SSD1305::ComMode mode)
 {
     uint8_t arg = 0;
 
-    if (mode == Display::ComMode::Remap)
+    if (mode == SSD1305::ComMode::Remap)
         arg |= 0b1000;
 
     di.writeCommand(command::SetComOutputDirection | arg);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setDisplayOffset(uint8_t offset)
+void SSD1305::setDisplayOffset(uint8_t offset)
 {
     di.writeCommand(command::SetDisplayOffset);
     di.writeCommand(offset);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setDisplayClockDivide(uint8_t ratio, uint8_t fOsc)
+void SSD1305::setDisplayClockDivide(uint8_t ratio, uint8_t fOsc)
 {
     ratio &= 0xf;
     fOsc &= 0xf;
@@ -212,14 +207,14 @@ void Display::setDisplayClockDivide(uint8_t ratio, uint8_t fOsc)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setAreaColorModeAndPowerMode(ColorMode color, PowerMode power)
+void SSD1305::setAreaColorModeAndPowerMode(ColorMode color, PowerMode power)
 {
     uint8_t arg = 0;
 
-    if (color == Display::ColorMode::AreaColor)
+    if (color == SSD1305::ColorMode::AreaColor)
         arg |= 0b11 << 4;
 
-    if (power == Display::PowerMode::LowPower)
+    if (power == SSD1305::PowerMode::LowPower)
         arg |= 0b101;
 
     di.writeCommand(command::SetAreaColorMode);
@@ -227,14 +222,14 @@ void Display::setAreaColorModeAndPowerMode(ColorMode color, PowerMode power)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setPrechargingPeriod(uint8_t phase1, uint8_t phase2)
+void SSD1305::setPrechargingPeriod(uint8_t phase1, uint8_t phase2)
 {
     di.writeCommand(command::SetPrechargingPeriod);
     di.writeCommand(phase1 | (phase2 << 4));
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setComPinConfig(bool alternative, bool lrRemap)
+void SSD1305::setComPinConfig(bool alternative, bool lrRemap)
 {
     uint8_t arg = 0b10;
 
@@ -249,21 +244,21 @@ void Display::setComPinConfig(bool alternative, bool lrRemap)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setVcomhDeselectLevel(VcomhLevel level)
+void SSD1305::setVcomhDeselectLevel(VcomhLevel level)
 {
     uint8_t arg = 0;
 
     switch (level)
     {
-    case Display::VcomhLevel::x0_43:
+    case SSD1305::VcomhLevel::x0_43:
         arg = 0;
         break;
 
-    case Display::VcomhLevel::x0_77:
+    case SSD1305::VcomhLevel::x0_77:
         arg = 0b1101;
         break;
 
-    case Display::VcomhLevel::x0_83:
+    case SSD1305::VcomhLevel::x0_83:
         arg = 0b1111;
         break;
     }
@@ -275,44 +270,37 @@ void Display::setVcomhDeselectLevel(VcomhLevel level)
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::enterReadWriteModify()
+void SSD1305::enterReadWriteModify()
 {
     di.writeCommand(command::EnterReadWriteModify);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::exitReadWriteModify()
+void SSD1305::exitReadWriteModify()
 {
     di.writeCommand(command::ExitReadWriteModify);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::nop()
+void SSD1305::nop()
 {
     di.writeCommand(command::Nop);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::setChargePump(bool enable)
-{
-    di.writeCommand(command::ChargePumpSetting);
-    di.writeCommand(enable ? 0x14 : 0x10);
-}
-
-//--------------------------------------------------------------------------------------------------
-void Display::draw(uint8_t data)
+void SSD1305::draw(uint8_t data)
 {
     di.writeData(data);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::draw(const uint8_t *data, size_t length)
+void SSD1305::draw(const uint8_t *data, size_t length)
 {
     di.writeData(data, length);
 }
 
 //--------------------------------------------------------------------------------------------------
-void Display::submitImage(const uint8_t *image, size_t length)
+void SSD1305::submitImage(const uint8_t *image, size_t length)
 {
     resetPageStartAddress();
     resetColumnStartAddress();

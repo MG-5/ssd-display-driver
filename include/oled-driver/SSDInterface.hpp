@@ -4,7 +4,7 @@
 #include <cstdint>
 
 /// Hardware interface to a SSD1305/6 display controller.
-class SSD1306Interface
+class SSDInterface
 {
 public:
     /// Writes a single command byte to the display driver.
