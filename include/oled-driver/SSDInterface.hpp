@@ -25,4 +25,9 @@ public:
     /// \param data   Pointer to the pixel data to be written.
     /// \param length The number of data bytes to be written.
     virtual void writeData(const uint8_t *data, size_t length) = 0;
+
+    /// Only needed for SSD1375a/SSD1680, which has a busy pin.
+    /// For other devices simply stubs this function.
+    /// Its clever to use FreeRTOS delay, if a RTOS is used.
+    virtual void waitUntilIdle() = 0;
 };

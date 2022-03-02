@@ -3,9 +3,11 @@
 #include "Font.hpp"
 #include "IRenderTarget.hpp"
 #include "Image.hpp"
-#include "fonts/mono.hpp"
+#include "fonts/dfi.hpp"
 
 #include <cstdio>
+
+class DualRenderer;
 
 /// Draws visual elements onto a screen buffer.
 class Renderer
@@ -126,7 +128,7 @@ public:
     static constexpr size_t PixelPerPage = 8;
     const size_t VramSize = ScreenWidth * ScreenPages;
 
-private:
+protected:
     /// Computes the correct X coordinate for differenct string alignments.
     /// \param x     The original X coordinate.
     /// \param align Alignment method.
@@ -141,7 +143,7 @@ private:
     uint8_t *vram = nullptr;
 
     /// Font used for text rendering. Can be set using setFont().
-    const Font *font = &fontMono;
-};
+    const Font *font = &fontDfi;
 
-extern Renderer renderer;
+    friend DualRenderer;
+};
