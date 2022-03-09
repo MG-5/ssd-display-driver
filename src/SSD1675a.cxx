@@ -1,7 +1,7 @@
 #include "oled-driver/SSD1675a.hpp"
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include <array>
 
