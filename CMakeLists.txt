@@ -10,6 +10,7 @@ add_library(${PROJECT_NAME} STATIC
         src/SSD1305.cxx
         src/SSD1306.cxx
         src/SSD1675a.cxx
+        src/SSD1680.cxx
 
         fonts/mono.cxx
         fonts/dfi.cxx
