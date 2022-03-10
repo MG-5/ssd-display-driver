@@ -274,6 +274,29 @@ size_t Renderer::print(const Renderer::Position &screenPosition, const char *str
         }
         else
         {
+            if (currentChar == (char)195) // UTF-8 start byte
+            {
+                char nextChar = *string++;
+
+                if (nextChar == (char)132)
+                    currentChar = (char)196; // Ä
+
+                else if (nextChar == (char)150)
+                    currentChar = (char)214; // Ö
+
+                else if (nextChar == (char)156)
+                    currentChar = (char)220; // Ü
+
+                else if (nextChar == (char)164)
+                    currentChar = (char)228; // ä
+
+                else if (nextChar == (char)182)
+                    currentChar = (char)246; // ö
+
+                else if (nextChar == (char)188)
+                    currentChar = (char)252; // ü
+            }
+
             currentPos.x += put(currentPos, currentChar, textScale);
 
             // Only insert space if there are more characters to follow
@@ -302,7 +325,30 @@ size_t Renderer::getLineWidth(const char *string, int textScale)
         }
         else
         {
-            currentWidth += font->getGlyph(*string).width * textScale;
+            if (currentChar == (char)195) // UTF-8 start byte
+            {
+                char nextChar = *string++;
+
+                if (nextChar == (char)132)
+                    currentChar = (char)196; // Ä
+
+                else if (nextChar == (char)150)
+                    currentChar = (char)214; // Ö
+
+                else if (nextChar == (char)156)
+                    currentChar = (char)220; // Ü
+
+                else if (nextChar == (char)164)
+                    currentChar = (char)228; // ä
+
+                else if (nextChar == (char)182)
+                    currentChar = (char)246; // ö
+
+                else if (nextChar == (char)188)
+                    currentChar = (char)252; // ü
+            }
+
+            currentWidth += font->getGlyph(currentChar).width * textScale;
 
             // Only insert space if there are more characters to follow
             char nextChar = *string;
