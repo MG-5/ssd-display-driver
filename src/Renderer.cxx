@@ -290,6 +290,9 @@ size_t Renderer::print(const Renderer::Position &screenPosition, const char *str
                 else if (nextChar == (char)164)
                     currentChar = (char)228; // ä
 
+                else if (nextChar == (char)169)
+                    currentChar = (char)101; // é
+
                 else if (nextChar == (char)182)
                     currentChar = (char)246; // ö
 
@@ -340,6 +343,9 @@ size_t Renderer::getLineWidth(const char *string, int textScale)
 
                 else if (nextChar == (char)164)
                     currentChar = (char)228; // ä
+
+                else if (nextChar == (char)169)
+                    currentChar = (char)101; // é
 
                 else if (nextChar == (char)182)
                     currentChar = (char)246; // ö
