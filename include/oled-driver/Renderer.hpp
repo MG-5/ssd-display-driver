@@ -143,5 +143,3 @@ private:
     /// Font used for text rendering. Can be set using setFont().
     const Font *font = &fontMono;
 };
-
-extern Renderer renderer;
