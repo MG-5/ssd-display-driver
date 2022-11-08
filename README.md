@@ -1,2 +1,2 @@
 # ssd-display-driver
-Contains driver for controlling SSD1305/6 chips and suitable renderer to draw text, lines etc
+Contains driver for SSD1305, SSD1306 (both OLED) and SSD1675a, SSD1680 (both ePaper).

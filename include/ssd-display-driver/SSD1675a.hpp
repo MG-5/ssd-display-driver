@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "IRenderTarget.hpp"
 #include "SSDInterface.hpp"
+#include "display-renderer/IRenderTarget.hpp"
 
 class SSD1675a : public IRenderTarget
 {

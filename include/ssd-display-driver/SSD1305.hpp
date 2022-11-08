@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IRenderTarget.hpp"
 #include "SSDInterface.hpp"
+#include "display-renderer/IRenderTarget.hpp"
 
 /// Display driver interface for the SSD1305 OLED controller IC.
 class SSD1305 : public IRenderTarget

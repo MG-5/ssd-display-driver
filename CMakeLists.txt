@@ -3,17 +3,13 @@ cmake_policy(SET CMP0048 NEW)
 
 project(ssd-display-driver LANGUAGES CXX C ASM)
 
-add_library(${PROJECT_NAME} STATIC
-        src/Image.cxx
-        src/Renderer.cxx
+add_subdirectory(display-renderer)
 
+add_library(${PROJECT_NAME} STATIC
         src/SSD1305.cxx
         src/SSD1306.cxx
         src/SSD1675a.cxx
         src/SSD1680.cxx
-
-        fonts/mono.cxx
-        fonts/dfi.cxx
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -21,4 +17,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         .
         )
 
-target_link_libraries(${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}
+        display-renderer)
