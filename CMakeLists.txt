@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0048 NEW)
 
-project(oled-driver LANGUAGES CXX C ASM)
+project(ssd-display-driver LANGUAGES CXX C ASM)
 
 add_library(${PROJECT_NAME} STATIC
         src/Image.cxx

@@ -1,4 +1,4 @@
-#include "oled-driver/SSD1680.hpp"
+#include "ssd-display-driver/SSD1680.hpp"
 #include <array>
 
 namespace command

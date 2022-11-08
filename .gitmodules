@@ -1,0 +1,3 @@
+[submodule "display-renderer"]
+	path = display-renderer
+	url = ../display-renderer.git

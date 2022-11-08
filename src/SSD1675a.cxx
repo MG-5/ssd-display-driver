@@ -1,4 +1,4 @@
-#include "oled-driver/SSD1675a.hpp"
+#include "ssd-display-driver/SSD1675a.hpp"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

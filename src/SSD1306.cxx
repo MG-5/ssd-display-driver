@@ -1,4 +1,4 @@
-#include "oled-driver/SSD1306.hpp"
+#include "ssd-display-driver/SSD1306.hpp"
 
 namespace command
 {
