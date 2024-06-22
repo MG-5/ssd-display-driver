@@ -30,4 +30,8 @@ public:
     /// For other devices simply stubs this function.
     /// Its clever to use FreeRTOS delay, if a RTOS is used.
     virtual void waitUntilIdle() = 0;
+
+    /// Delays the program execution for a given number of milliseconds.
+    /// Its clever to use FreeRTOS delay, if a RTOS is used.
+    virtual void delay(uint32_t ms) = 0;
 };
