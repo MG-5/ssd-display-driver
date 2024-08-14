@@ -1,8 +1,5 @@
 #include "ssd-display-driver/SSD1675a.hpp"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
 #include <array>
 
 constexpr auto Width = 152;
@@ -133,7 +130,6 @@ void SSD1675a::init()
     interface.waitUntilIdle();
     softwareReset();
     interface.waitUntilIdle();
-    vTaskDelay(20);
 
     setDataEntryMode(0b001);
     setDisplayUpdateControl1(RamOption::Normal, RamOption::Inverse, false);
